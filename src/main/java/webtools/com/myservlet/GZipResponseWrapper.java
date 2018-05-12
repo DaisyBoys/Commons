@@ -1,11 +1,10 @@
 package webtools.com.myservlet;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 
 public class GZipResponseWrapper extends HttpServletResponseWrapper {
 
@@ -23,32 +22,38 @@ public class GZipResponseWrapper extends HttpServletResponseWrapper {
 		this.response = response;
 	}
 
+	@Override
 	public ServletOutputStream getOutputStream() throws IOException {
-		if (gzipOutputStream == null)
+		if(gzipOutputStream == null) {
 			gzipOutputStream = new GZipOutputStream(response);
+		}
 		return gzipOutputStream;
 	}
-
+	@Override
 	public PrintWriter getWriter() throws IOException {
-		if (writer == null)
+		if (writer == null) {
 			writer = new PrintWriter(new OutputStreamWriter(
 					new GZipOutputStream(response), "UTF-8"));
+		}
 		return writer;
 	}
 
 	// 压缩后数据长度会发生变化 因此将该方法内容置空
+	@Override
 	public void setContentLength(int contentLength) {
 	}
-
+	@Override
 	public void flushBuffer() throws IOException {
 		gzipOutputStream.flush();
 	}
 
 	public void finishResponse() throws IOException {
-		if (gzipOutputStream != null)
+		if (gzipOutputStream != null) {
 			gzipOutputStream.close();
-		if (writer != null)
+		}
+		if (writer != null) {
 			writer.close();
+		}
 	}
 }
 

@@ -1,10 +1,10 @@
 package webtools.com.myservlet;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
+import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.zip.GZIPOutputStream;
-
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
 
 public class GZipOutputStream extends ServletOutputStream {
 
@@ -21,11 +21,11 @@ public class GZipOutputStream extends ServletOutputStream {
 		byteArrayOutputStream = new ByteArrayOutputStream();
 		gzipOutputStream = new GZIPOutputStream(byteArrayOutputStream);
 	}
-
+	@Override
 	public void write(int b) throws IOException {
 		gzipOutputStream.write(b);
 	}
-
+	@Override
 	public void close() throws IOException {
 
 		
@@ -44,17 +44,27 @@ public class GZipOutputStream extends ServletOutputStream {
 		out.close();
 		gzipOutputStream.close();
 	}
-
+	@Override
 	public void flush() throws IOException {
 		gzipOutputStream.flush();
 	}
-
+	@Override
 	public void write(byte[] b, int off, int len) throws IOException {
 		gzipOutputStream.write(b, off, len);
 	}
-
+	@Override
 	public void write(byte[] b) throws IOException {
 		gzipOutputStream.write(b);
+	}
+
+	@Override
+	public boolean isReady() {
+		return false;
+	}
+
+	@Override
+	public void setWriteListener(WriteListener listener) {
+
 	}
 }
 

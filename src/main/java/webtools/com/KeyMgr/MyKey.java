@@ -1,18 +1,19 @@
 package webtools.com.KeyMgr;
 
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import webtools.common.database.DBResult;
 import webtools.common.database.JdbcAgent;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public final class MyKey {
 	private JdbcAgent jAgent=new JdbcAgent();
 //	public MyKey(JdbcAgent jAgent){
 //		this.jAgent=jAgent;
 //	}
-	protected  void finalize() throws Throwable{             
+	@Override
+	protected  void finalize() throws Throwable{
         super.finalize();
         try {
         	jAgent=null;
@@ -123,7 +124,7 @@ public final class MyKey {
 				}
 				nCnt++;
 				String strCnt="";
-				strCnt=strCnt.format("-%06d", nCnt);
+				strCnt= String.format("-%06d", nCnt);
 				strRtn=strFirst+str_date+strCnt;
 				int nCntChk=1;
 				while(nCntChk>0){
@@ -145,7 +146,7 @@ public final class MyKey {
 						// TODO: handle exception
 					}
 					nCnt++;
-					strCnt=strCnt.format("-%06d", nCnt);
+					strCnt= String.format("-%06d", nCnt);
 					strRtn=strFirst+str_date+strCnt;
 					
 				}
@@ -261,7 +262,7 @@ public final class MyKey {
 				}
 				nCnt++;
 				String strCnt="";
-				strCnt=strCnt.format("%06d", lKey);
+				strCnt= String.format("%06d", lKey);
 				strRtn=strFirst+str_date+strCnt;
 				int nCntChk=1;
 				while(nCntChk>0){
@@ -283,7 +284,7 @@ public final class MyKey {
 						// TODO: handle exception
 					}
 					nCnt++;
-					strCnt=strCnt.format("%06d", lKey);
+					strCnt= String.format("%06d", lKey);
 					strRtn=strFirst+str_date+strCnt;
 					
 				}

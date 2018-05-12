@@ -36,6 +36,7 @@ import webtools.common.database.JdbcAgentEx;
  *  useBodyEncodingForURI="true"
  * **/
 public final class ReqSearch {
+	@Override
 	@SuppressWarnings("unchecked")
 	protected  void finalize() throws Throwable{             
         super.finalize();
