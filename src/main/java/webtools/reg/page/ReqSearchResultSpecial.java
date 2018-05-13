@@ -1,19 +1,20 @@
 package webtools.reg.page;
 
 
+import webtools.reg.page.bean.search.BeanQueryPageLinkInfo;
+
 import java.net.URLDecoder;
 import java.util.ArrayList;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import webtools.reg.page.bean.search.BeanQueryPageLinkInfo;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 
  * */
 public final class ReqSearchResultSpecial {
+	@Override
 	@SuppressWarnings("unchecked")
 	protected  void finalize() throws Throwable{             
         super.finalize();
@@ -113,7 +114,7 @@ public final class ReqSearchResultSpecial {
 	public void setNRsCnt(int rsCnt) {
 		nRsCnt = rsCnt;
 	}
-	private List rsList=null;//��¼����
+	private List rsList=null;
 	public int getNPageSize() {
 		return nPageSize;
 	}
@@ -193,7 +194,7 @@ public final class ReqSearchResultSpecial {
 	public String getOrderbyInfo(String orderName,int nType){
 		String strRtn="";
 		String frm=this.getOrderbyInfo();
-		strRtn=strRtn.format(frm, orderName,nType+"");
+		strRtn= String.format(frm, orderName,nType+"");
 		return strRtn;
 	}
 	

@@ -1,18 +1,16 @@
 package webtools.common.databaseex;
 
-import javax.servlet.http.HttpServletRequest;
-
 public class InPhrase extends BasePhrase {
 
 	@Override
-	public String get_phrase(webtools.common.URL.RequestConnection con) {
+	public String getPhrase(webtools.common.URL.RequestConnection con) {
 		// TODO Auto-generated method stub
 		int idx = find_var(0);
 		if(idx != -1)
 		{
 			String[] name = {null};
-			boolean[] ischar = {false}; 
-			get_var(idx,name,ischar);
+			boolean[] ischar = {false};
+			getVar(idx,name,ischar);
 			if(name[0] != null && !name[0].equals(""))
 			{
 				//String[] vals = con.getRequest().getParameterValues(name[0]);
@@ -27,7 +25,7 @@ public class InPhrase extends BasePhrase {
 						v += flag + vals[i] + flag;
 						if(i < vals.length -1) v += ",";
 					}
-					return left + " " + oper + " (" + v + ")"; 
+					return left + " " + oper + " (" + v + ")";
 				}
 			}
 			return new String("");
@@ -37,12 +35,13 @@ public class InPhrase extends BasePhrase {
 			return left + " " + oper + " " + value;
 		}
 	}
-	
-	private String value;	
-	public void put_value(String val) {
+
+	private String value;
+	@Override
+	public void putValue(String val) {
 		value = val;
 	}
-	
+
 	private int find_var(int index)
 	{
 		int pt = value.indexOf('$',index);
@@ -52,8 +51,8 @@ public class InPhrase extends BasePhrase {
 		}
 		return pt;
 	}
-	
-	private int get_var(int index,String[] var_name,boolean[] ischar)
+
+	private int getVar(int index,String[] var_name,boolean[] ischar)
 	{
 		ischar[0] = false;
 		StringBuffer var = new StringBuffer("");

@@ -1,29 +1,23 @@
 package webtools.reg.page;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-
-import java.util.ArrayList;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import HTTPJSON.GsonMapMgr;
-
-import webtools.reg.page.bean.search.BeanQueryPageLinkInfo;
-import webtools.reg.page.bean.search.QuerySqlBean;
-
+import webtools.HTTPJSON.GsonMapMgr;
 import webtools.common.database.DBResult;
 import webtools.common.database.JdbcAgent;
 import webtools.common.database.JdbcAgentEx;
+import webtools.reg.page.bean.search.BeanQueryPageLinkInfo;
+import webtools.reg.page.bean.search.QuerySqlBean;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Pattern;
 
 /**
  * 查询请求处理层
@@ -172,7 +166,7 @@ public final class ReqSearch {
 	}
 	/**
 	 * 得到查询条件值
-	 * @param 输入参数 name = 查询条件的名称
+	 * @param name = 查询条件的名称
 	 * @return NULL 为查询条件未设置，否则为当前的查询条件
 	 * */
 	public String getQueryTermValue(final String name){

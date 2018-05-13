@@ -1,0 +1,277 @@
+package webtools.HTTPJSON;
+
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+
+/**
+ * A数组update成功
+ * B数组select
+ */
+public final class HttpUtil {
+
+
+    private String result;//返回的结果集合
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
+    private int nErr = 0;
+
+    public int getnErr() {
+        return nErr;
+    }
+
+    public void setnErr(int nErr) {
+        this.nErr = nErr;
+    }
+
+    /*
+     * 请求串为json格式。公用信息如下：
+	*softVer: 软件版本号，由机器自行定义，为后续排除问题提供依据。
+	*systemVer：系统版本号。
+	*machId: 机器id，由富雷设备出厂定义。
+	*paramList: 请求参数集，使用标准JSON格式
+     * */
+    //Convert16 pConvert16 =null;
+//	softVer 软件版本号，systemVer 系统版本号，机器id machId
+    public String httpSet(final String url, final String act, final String paramOpt, String jsonStr) {
+        this.setnErr(0);
+
+        //连接地址
+        String urlTerm = "";
+        try {
+            urlTerm += "paramOpt=" + paramOpt;
+            urlTerm += "&act=" + act;//业务接口标识
+            //urlTerm+="&paramOpt="+OperationType;
+            //urlTerm+="&machId="+ URLEncoder.encode(machId,"utf-8");
+            jsonStr = this.string2Unicode(jsonStr);
+            String base64Json = Base64.encode(jsonStr.getBytes());
+
+            urlTerm += "&paramList=" + base64Json;
+
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        HttpURLConnection conn = null;
+        //OutputStream outStream=null;
+        BufferedReader in = null;
+        String responseData = "";
+        byte[] sendData = urlTerm.getBytes();
+        try {
+            final URL u = new URL(url);
+
+            conn = (HttpURLConnection) u.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setConnectTimeout(20000);
+            conn.setReadTimeout(20000);
+            // 如果通过post提交数据，必须设置允许对外输出数据
+            conn.setDoOutput(true);
+
+            conn.setDoInput(true);
+            conn.setUseCaches(false);
+
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            //conn.setRequestProperty("Content-Type", "text/xml");
+            conn.setRequestProperty("Charset", "UTF-8");
+            conn.setRequestProperty("Content-Length", String.valueOf(sendData.length));
+            OutputStream outStream = conn.getOutputStream();
+            outStream.write(sendData);
+            outStream.flush();
+            outStream.close();
+            //outStream=null;
+            if (conn.getResponseCode() == 200) {
+                // 获得服务器响应的数据
+                in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+                // 数据
+                String retData = null;
+
+                try {
+                    while ((retData = in.readLine()) != null) {
+                        responseData += retData;
+                    }
+                } catch (Exception e) {
+                    this.setnErr(-1002);
+                }
+
+                in.close();
+                in = null;
+
+            } else {
+                //连接错误
+                nErr = -1001;
+                this.setnErr(-1001);
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+            //地址错误
+            nErr = -1000;
+            this.setnErr(-1000);
+        }
+        try {
+            if (conn != null) {
+                conn.disconnect();
+                conn = null;
+            }
+            //if (outStream!=null){
+            //	outStream.close();
+            //	outStream=null;
+            //}
+            if (in != null) {
+                in.close();
+                in = null;
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+            this.setnErr(-1000);
+        }
+
+        return repBASE64(responseData);
+
+    }
+
+    /**
+     * 字符串转换unicode
+     */
+    public String string2Unicode(String string) {
+
+        StringBuffer unicode = new StringBuffer();
+
+        for (int i = 0; i < string.length(); i++) {
+
+            // 取出每一个字符
+            char c = string.charAt(i);
+
+            // 转换为unicode
+            unicode.append("\\u" + Integer.toHexString(c));
+        }
+
+        return unicode.toString();
+    }
+
+
+    //查询处理
+    public String httpGet(String url, int nOperationType, String jsonStr, int Page, int PageSize) {
+        //if (pConvert16==null)pConvert16=new Convert16();
+        //url+=ClientDefine.url_select_Root+"?";
+        //url = "http://192.168.0.108/eod01/vc/select.jsp";
+        //URL u = null;
+        String urlTerm = "";
+        try {
+            urlTerm += "OperationType=" + nOperationType;
+            urlTerm += "&Page=" + Page;
+            urlTerm += "&PageSize=" + PageSize;
+            urlTerm += "&paramList=" + jsonStr;
+
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        HttpURLConnection conn = null;
+        //OutputStream outStream=null;
+        BufferedReader in = null;
+        String responseData = "";
+        byte[] sendData = urlTerm.getBytes();
+        try {
+
+            URL u = new URL(url);
+            conn = (HttpURLConnection) u.openConnection();
+
+
+            //	conn.setRequestMethod("POST");
+            conn.setConnectTimeout(2000);
+            conn.setReadTimeout(60000);
+            // 如果通过post提交数据，必须设置允许对外输出数据
+            conn.setDoOutput(true);
+
+            conn.setDoInput(true);
+            conn.setUseCaches(false);
+            conn.setRequestMethod("POST");//设置URL请求方法
+
+
+            //conn.setRequestProperty("Content-Type", "application/octet-stream");
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            conn.setRequestProperty("Connection", "Keep-Alive");// 维持长连接
+            conn.setRequestProperty("Charset", "UTF-8");
+            conn.setRequestProperty("Content-length", "" + String.valueOf(sendData.length));
+
+            OutputStream outStream = conn.getOutputStream();
+
+            outStream.write(sendData);
+            outStream.flush();
+            outStream.close();
+            //outStream=null;
+
+            if (conn.getResponseCode() == 200) {
+                // 获得服务器响应的数据
+                in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+                // 数据
+                String retData = null;
+
+                try {
+                    while ((retData = in.readLine()) != null) {
+                        responseData += retData;
+                    }
+                } catch (Exception e) {
+                    this.setnErr(-1002);
+                }
+
+                in.close();
+                in = null;
+
+            } else {
+                nErr = -1001;
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+            //Constant.strStep+=e.toString();
+            nErr = -1000;
+        }
+
+
+        try {
+            if (conn != null) {
+                conn.disconnect();
+                conn = null;
+            }
+            //if (outStream!=null){
+            //	outStream.close();
+            //	outStream=null;
+            //}
+            if (in != null) {
+                in.close();
+                in = null;
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        return repBASE64(responseData);
+
+    }
+
+    //BASE64处理
+    private String repBASE64(String str) {
+        String outJson = str;
+        try {
+            outJson = outJson.trim();
+            //BASE64处理
+            if (!outJson.trim().equals("")) {
+                if (outJson.indexOf(" ") >= 0) {
+                    outJson = outJson.replaceAll(" ", "+");
+                }
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        return outJson;
+    }
+}

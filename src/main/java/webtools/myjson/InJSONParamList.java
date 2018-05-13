@@ -1,20 +1,17 @@
 package webtools.myjson;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import java.net.URLDecoder;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import webtools.org.common.pfcy.util.MD5Utils;
-
-
-import BO.tools.InGeneralParam;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 public class InJSONParamList {
 	private String utf8CoverStr(String str){
-		if(str==null)return "";
+		if(str==null) {
+			return "";
+		}
 		String strRtn="";
 		try {
 			strRtn=URLDecoder.decode(str,"utf-8");
@@ -49,7 +46,8 @@ public class InJSONParamList {
 	}
 	private String getCovertBase64(String strJsonBASE64){
 		strJsonBASE64=strJsonBASE64.replaceAll(" ", "+");
-		String str = new String(Base64.decode(strJsonBASE64));//解析BASE64
+		//解析BASE64
+		String str = new String(Base64.decode(strJsonBASE64));
 		if(str!=null){
 			//UNIT
 			str= unicode2String(str);

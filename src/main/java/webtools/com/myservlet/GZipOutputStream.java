@@ -1,4 +1,5 @@
 package webtools.com.myservlet;
+
 import javax.servlet.ServletOutputStream;
 import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletResponse;
@@ -8,63 +9,68 @@ import java.util.zip.GZIPOutputStream;
 
 public class GZipOutputStream extends ServletOutputStream {
 
-	private HttpServletResponse response;
+    private HttpServletResponse response;
 
-	
-	private GZIPOutputStream gzipOutputStream;
 
-	
-	private ByteArrayOutputStream byteArrayOutputStream;
+    private GZIPOutputStream gzipOutputStream;
 
-	public GZipOutputStream(HttpServletResponse response) throws IOException {
-		this.response = response;
-		byteArrayOutputStream = new ByteArrayOutputStream();
-		gzipOutputStream = new GZIPOutputStream(byteArrayOutputStream);
-	}
-	@Override
-	public void write(int b) throws IOException {
-		gzipOutputStream.write(b);
-	}
-	@Override
-	public void close() throws IOException {
 
-		
-		gzipOutputStream.finish();
+    private ByteArrayOutputStream byteArrayOutputStream;
 
-		
-		byte[] content = byteArrayOutputStream.toByteArray();
+    public GZipOutputStream(HttpServletResponse response) throws IOException {
+        this.response = response;
+        byteArrayOutputStream = new ByteArrayOutputStream();
+        gzipOutputStream = new GZIPOutputStream(byteArrayOutputStream);
+    }
 
-		
-		response.addHeader("Content-Encoding", "gzip");
-		response.addHeader("Content-Length", Integer.toString(content.length));
+    @Override
+    public void write(int b) throws IOException {
+        gzipOutputStream.write(b);
+    }
 
-		
-		ServletOutputStream out = response.getOutputStream();
-		out.write(content);
-		out.close();
-		gzipOutputStream.close();
-	}
-	@Override
-	public void flush() throws IOException {
-		gzipOutputStream.flush();
-	}
-	@Override
-	public void write(byte[] b, int off, int len) throws IOException {
-		gzipOutputStream.write(b, off, len);
-	}
-	@Override
-	public void write(byte[] b) throws IOException {
-		gzipOutputStream.write(b);
-	}
+    @Override
+    public void close() throws IOException {
 
-	@Override
-	public boolean isReady() {
-		return false;
-	}
 
-	@Override
-	public void setWriteListener(WriteListener listener) {
+        gzipOutputStream.finish();
 
-	}
+
+        byte[] content = byteArrayOutputStream.toByteArray();
+
+
+        response.addHeader("Content-Encoding", "gzip");
+        response.addHeader("Content-Length", Integer.toString(content.length));
+
+
+        ServletOutputStream out = response.getOutputStream();
+        out.write(content);
+        out.close();
+        gzipOutputStream.close();
+    }
+
+    @Override
+    public void flush() throws IOException {
+        gzipOutputStream.flush();
+    }
+
+    @Override
+    public void write(byte[] b, int off, int len) throws IOException {
+        gzipOutputStream.write(b, off, len);
+    }
+
+    @Override
+    public void write(byte[] b) throws IOException {
+        gzipOutputStream.write(b);
+    }
+
+    @Override
+    public boolean isReady() {
+        return false;
+    }
+
+    @Override
+    public void setWriteListener(WriteListener listener) {
+
+    }
 }
 
