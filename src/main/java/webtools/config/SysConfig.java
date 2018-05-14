@@ -2,7 +2,6 @@ package webtools.config;
 
 import webtools.common.database.DBResult;
 import webtools.common.database.JdbcAgent;
-
 import java.io.*;
 import java.util.*;
 
@@ -37,12 +36,13 @@ public class SysConfig {
         } catch (Exception e) {
             throw new RuntimeException("Error loading properties file.", e);
         } finally {
-            if (inputStream != null)
+            if (inputStream != null) {
                 try {
                     inputStream.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
         }
 
         // 初始化sys_config
@@ -91,5 +91,13 @@ public class SysConfig {
 
     public static <T> T get(String key) {
         return (T) vars.get(key);
+    }
+
+    public static void main(String[] ags){
+
+
+
+
+
     }
 }
