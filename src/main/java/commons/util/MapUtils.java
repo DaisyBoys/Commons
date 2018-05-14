@@ -18,7 +18,8 @@ public class MapUtils {
      * @return
      * @throws UnsupportedEncodingException
      */
-    public static <T, V> Map<T, V> mapToUtf8(Map<T, V> map) throws UnsupportedEncodingException {
+    public static <T, V> Map<T, V> mapToUtf8(Map<T, V> map)
+            throws UnsupportedEncodingException {
         Map<T, V> result = new HashMap<T, V>();
         Iterator iter = map.entrySet().iterator();
         while (iter.hasNext()) {
