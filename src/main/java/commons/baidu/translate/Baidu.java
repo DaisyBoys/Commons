@@ -20,6 +20,7 @@ import java.util.regex.Pattern;
 
 /**
  * 百度翻译工具类
+ * 在平台申请的APP_ID 详见 http://api.fanyi.baidu.com/api/trans/product/desktop?req=developer
  */
 public class Baidu {
     private static Logger LOG = Logger.getLogger(Baidu.class);
@@ -52,8 +53,8 @@ public class Baidu {
 
     // 在平台申请的APP_ID 详见 http://api.fanyi.baidu.com/api/trans/product/desktop?req=developer
     //private static final String TRANS_API_HOST = "http://fanyi-api.baidu.com/api/trans/vip/translate";
-    //private static final String APP_ID = "20170807000071070";
-    //private static final String SECURITY_KEY = "yTthDvT5YBm2mSii3c9i";
+    //private static final String APP_ID = "";
+    //private static final String SECURITY_KEY = "";
 
     public static String translate_html(String html, String srclanguage, String deslanguage) {
         init();
@@ -175,7 +176,6 @@ public class Baidu {
             for (int i = 0; i < afterPos.size(); i++) {
                 if (i == 0) {
                     list.add(inputString.substring(0, afterPos.get(i)));
-
                 } else {
                     list.add(inputString.substring(afterPos.get(i - 1), afterPos.get(i)));
                 }
