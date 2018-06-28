@@ -3,6 +3,7 @@ package commons.util;
 import org.apache.http.util.TextUtils;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -29,6 +30,32 @@ public class DateUtils extends org.apache.commons.lang.time.DateUtils{
 
     }
 
+
+    /**
+     * 字符日期格式化
+     * @param timeStr
+     * @param formats
+     * @return
+     * @throws NumberFormatException
+     */
+    public static String TimetoDateStr(String timeStr, String formats){
+        if (TextUtils.isEmpty(formats)) {
+            formats = DATETIME_FORMAT;
+        }
+        if (StringUtils.isBlank(timeStr)) {
+            return timeStr;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat(formats);
+        Date date = null;
+        try {
+            date = sdf.parse(timeStr);
+        } catch (ParseException e) {
+            System.out.println("日期转换出错！");
+            e.printStackTrace();
+            return timeStr;
+        }
+        return sdf.format(date);
+    }
 
 
     /**
